@@ -2,7 +2,7 @@
 ## Version: 1.0 rVERSION_NUMBER
 ## Author: Circonian, sirinsidiator
 ## Description: A library used to aid in creating message windows
-## APIVersion: 100030 100031
+## APIVersion: 100031 100032
 ## AddOnVersion: VERSION_NUMBER
 ## IsLibrary: true
 ## OptionalDependsOn: LibStub
