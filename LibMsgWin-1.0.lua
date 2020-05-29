@@ -1,16 +1,14 @@
-local LIB_IDENTIFIER = "LibMsgWin-1.0"
-
-local lib
+local libName, libVersion = "LibMsgWin-1.0", 10
+local lib, oldminor
 if(not LibStub) then
     lib = {}
 else
-    lib = LibStub:NewLibrary(LIB_IDENTIFIER, 999) -- only for test purposes. releases will get a smaller number
+    lib, oldminor = LibStub:NewLibrary(libName, libVersion)
     if not lib then
         return -- already loaded and no upgrade necessary
     end
 end
-
-LibMsgWin = lib
+if not lib then return end
 
 local function AdjustSlider(self)
     local numHistoryLines = self:GetNamedChild("Buffer"):GetNumHistoryLines()
@@ -24,7 +22,7 @@ local function AdjustSlider(self)
     -- If the sliders at the bottom, stay at the bottom to show new text
     if sliderValue == sliderMax then
         self:GetNamedChild("Slider"):SetValue(numHistoryLines)
-        -- If the buffer is full start moving the slider up
+    -- If the buffer is full start moving the slider up
     elseif numHistoryLines == self:GetNamedChild("Buffer"):GetMaxHistoryLines() then
         self:GetNamedChild("Slider"):SetValue(sliderValue-1)
     end -- Else the slider does not move
@@ -55,10 +53,10 @@ function lib:CreateMsgWindow(_UniqueName, _LabelText, _FadeDelay, _FadeTime)
     tlw:SetResizeHandleSize(16)
 
     -- Set Fade Delay/Times
-    tlw.fadeDelayWindow		= _FadeDelay or 0
-    tlw.fadeTimeWindow		= _FadeTime or 0
-    tlw.fadeDelayTextLines 	= tlw.fadeDelayWindow/1000
-    tlw.fadeTimeTextLines 	= tlw.fadeTimeWindow/1000
+    tlw.fadeDelayWindow     = _FadeDelay or 0
+    tlw.fadeTimeWindow      = _FadeTime or 0
+    tlw.fadeDelayTextLines  = tlw.fadeDelayWindow/1000
+    tlw.fadeTimeTextLines   = tlw.fadeTimeWindow/1000
 
     -- Create window fade timeline/animation
     tlw.timeline = ANIMATION_MANAGER:CreateTimeline()
@@ -69,9 +67,9 @@ function lib:CreateMsgWindow(_UniqueName, _LabelText, _FadeDelay, _FadeTime)
 
 
     function tlw:AddText(_Message, _Red, _Green, _Blue)
-        local Red 	= _Red or 1
+        local Red   = _Red or 1
         local Green = _Green or 1
-        local Blue 	= _Blue or 1
+        local Blue  = _Blue or 1
 
         if not _Message then return end
         -- Add message first
@@ -84,16 +82,16 @@ function lib:CreateMsgWindow(_UniqueName, _LabelText, _FadeDelay, _FadeTime)
     end
     function tlw:ChangeWinFade(_FadeDelay, _FadeTime)
         if not (type(_FadeDelay) == "number" and type(_FadeTime) == "number") then return end
-        tlw.fadeDelayWindow		= _FadeDelay
-        tlw.fadeTimeWindow		= _FadeTime
+        tlw.fadeDelayWindow     = _FadeDelay
+        tlw.fadeTimeWindow      = _FadeTime
 
         tlw.timeline:SetAnimationOffset(tlw.animation, _FadeDelay)
         tlw.animation:SetDuration(_FadeTime)
     end
     function tlw:ChangeTextFade(_FadeDelay, _FadeTime)
         if not (type(_FadeDelay) == "number" and type(_FadeTime) == "number") then return end
-        tlw.fadeDelayTextLines 	= _FadeDelay/1000
-        tlw.fadeTimeTextLines 	= _FadeTime/1000
+        tlw.fadeDelayTextLines  = _FadeDelay/1000
+        tlw.fadeTimeTextLines   = _FadeTime/1000
         self:GetNamedChild("Buffer"):SetLineFade(_FadeDelay/1000, _FadeTime/1000)
     end
     function tlw:ClearText()
@@ -221,3 +219,5 @@ function lib:CreateMsgWindow(_UniqueName, _LabelText, _FadeDelay, _FadeTime)
     end
     return tlw
 end
+
+LibMsgWin = lib
