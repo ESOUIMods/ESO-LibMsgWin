@@ -1,9 +1,9 @@
 ## Title: LibMsgWin-1.0
-## Version: 1.0 r10
+## Version: 1.0 r11
 ## Author: Circonian, sirinsidiator
 ## Description: A library used to aid in creating message windows
-## APIVersion: 100030 100031
-## AddOnVersion: 10
+## APIVersion: 100031 100032
+## AddOnVersion: 11
 ## IsLibrary: true
 ## OptionalDependsOn: LibStub
 ##
